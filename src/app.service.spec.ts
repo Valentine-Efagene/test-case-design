@@ -19,4 +19,8 @@ describe('AppService', () => {
   it('should return 5', () => {
     expect(service.getFibonacci(5)).toBe(5);
   });
+
+  it('should return 2', () => {
+    expect(service.getFibonacci(3)).toBe(2);
+  });
 });

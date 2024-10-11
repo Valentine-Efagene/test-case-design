@@ -1,5 +1,3 @@
-import 'dotenv/config';
-
 import { Test, TestingModule } from '@nestjs/testing';
 import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
@@ -31,21 +29,44 @@ describe('AppController (e2e)', () => {
     await app.close();
   });
 
-  it('Get a Fibonacci number too high', () => {
-    return request(app.getHttpServer())
-      .get('/fibonacci/13')
-      .expect(HttpStatus.BAD_REQUEST)
-      .expect(res => {
-        expect(res.body.message).toContain('n must not be greater than 10');
-      });
+  describe('tests for the incorrectness partitions', () => {
+    it('should return a validation error', () => {
+      return request(app.getHttpServer())
+        .get('/fibonacci/13')
+        .expect(HttpStatus.BAD_REQUEST)
+        .expect(res => {
+          expect(res.body.message).toContain('n must not be greater than 10');
+        });
+    });
+
+    it('should return a validation error', () => {
+      return request(app.getHttpServer())
+        .get('/fibonacci/a')
+        .expect(HttpStatus.BAD_REQUEST)
+        .expect(res => {
+          expect(res.body.message).toContain('n must be an integer number');
+        });
+    });
+
+    it('should return a validation error', () => {
+      return request(app.getHttpServer())
+        .get('/fibonacci/-3')
+        .expect(HttpStatus.BAD_REQUEST)
+        .expect(res => {
+          expect(res.body.message).toContain('n must not be less than 0');
+        });
+    });
   });
 
-  it('Get the 5th Fibonacci number', () => {
-    return request(app.getHttpServer())
-      .get('/fibonacci/5')
-      .expect(HttpStatus.OK)
-      .expect(res => {
-        expect(res.body.data).toBe(5);
-      });
-  });
+
+  describe('Tests for correctness', () => {
+    it('Get the 5th Fibonacci number', () => {
+      return request(app.getHttpServer())
+        .get('/fibonacci/5')
+        .expect(HttpStatus.OK)
+        .expect(res => {
+          expect(res.body.data).toBe(5);
+        });
+    });
+  })
 })

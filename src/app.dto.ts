@@ -1,6 +1,6 @@
 import { ApiExtraModels, ApiProperty } from "@nestjs/swagger";
 import { Transform } from "class-transformer";
-import { IsInt, IsPositive, Max } from 'class-validator'
+import { IsInt, Max, Min } from 'class-validator'
 
 export class FibonacciDto {
     @ApiProperty({
@@ -8,9 +8,9 @@ export class FibonacciDto {
         example: 4
     })
     @Transform(({ value }) => parseInt(value, 10), { toClassOnly: true })
-    @IsPositive()
     @IsInt()
     @Max(10)
+    @Min(0)
     n: number
 }
 

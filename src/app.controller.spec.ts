@@ -14,9 +14,13 @@ describe('AppController', () => {
     appController = app.get<AppController>(AppController);
   });
 
-  describe('root', () => {
-    it('should return "5"', () => {
+  describe('tests for correctness', () => {
+    it('should return 5', () => {
       expect(appController.fibonacci({ n: 5 }).data).toBe(5);
+    });
+
+    it('should return 2', () => {
+      expect(appController.fibonacci({ n: 3 }).data).toBe(2);
     });
   });
 });
